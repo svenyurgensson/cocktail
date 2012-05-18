@@ -91,7 +91,7 @@ module MyScaffold
     end
     
     def show
-      @object = scaffolded_resource.find(@id)
+      @object = scaffolded_resource.find(params[:id])
     end
   end
 end
