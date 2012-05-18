@@ -23,7 +23,7 @@ module CocktailMaker
       
   mixed do |args|
     args[:known_recipes].each do |cocktail|
-        define_method :"serve_#{cocktail.downcase}" do
+        define_method :"serve_a_#{cocktail.downcase}" do
           "Here is a #{cocktail} for you"
         end
     end
