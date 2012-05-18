@@ -1,5 +1,6 @@
 require "cocktail/version"
-require "cocktail/mixin"
+require "cocktail/mixable"
+require "cocktail/target"
 
 # eg.
 # 
@@ -15,4 +16,4 @@ module Cocktail
 end
 
 Class.send :include,  Cocktail::Target
-Module.send :include, Cocktail::Mixable
+Object.send :include, Cocktail::Mixable

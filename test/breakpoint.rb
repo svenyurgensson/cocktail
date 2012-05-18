@@ -1,0 +1,2 @@
+class Breakpoint < Exception
+end
