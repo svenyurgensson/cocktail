@@ -15,14 +15,6 @@ gem "cocktail"
 
 ## Usage
 
-### Mixing parametric modules
-
-``` rb
-class PostsController < Controller
-  mixin(MyDynamicScaffold, :resource => Post, :only => :show)
-end
-```
-
 ### Defining parametric modules
 
 ``` rb
@@ -37,14 +29,20 @@ module CocktailMaker
     end
   end
 end
+```
 
+### Mixing parametric modules
+
+``` rb
 class Bartender
   mixin CocktailMaker, :known_recipes => %W(Mojito Manhattan Daiquiri Negroni)
 end
+```
 
-Bartender.new.serve_a_mojito
-
-# => Here is a Mojito for you
+```
+> puts Bartender.new.serve_a_mojito
+Here is a Mojito for you
+=> nil 
 ```
 
 ## Contributing to `cocktail`
