@@ -1,17 +1,18 @@
 require "cocktail/version"
+require "cocktail/mixin"
 
-
-# es.
+# eg.
 # 
 # class PostsController < Controller
 #   mixin(MyScaffold, :resource => Post, :only => :show)
 #   
-#   
 # end
 
 module Cocktail
-  def mixin(module, options = {})
-    self.send(:include, module.mixin(options))
-  end
+
+
+
 end
 
+Class.send :include,  Cocktail::Target
+Module.send :include, Cocktail::Mixable

@@ -1,5 +1,5 @@
-# Cocktail
-Ruby parametric mixins
+# Cocktail – Ruby parametric mixins
+**Cocktail** is a ruby gem that allows you to use parametric mixins in Ruby
 
 ## Installation
 
@@ -26,30 +26,59 @@ end
 ### Defining parametric modules
 
 ``` rb
-module MyDynamicScaffold
-  mixed do |target, params|
+
+module Scaffold
+  extend Mixin
+  mixed do |params|
   
+    class << self
+      def resource(klass = nil)
+        @resource = klass.nil? ? @resource : klass 
+      end
+    end
+    
+    def resource
+      self.class.resource
+    end
+    
+  end
+  
+  extended do
+    
+  end
+  
+  def actions(mod, params)
     only    = [params[:only]].flatten!.compact!
     exclude = [params[:exclude]].flatten!.compact!
         
     actions = [:index, :show]
     only = actions if only.empty?
     
-    target.class_eval do
-      ((actions - exclude) & only).each do |action|
-        meth = MyScaffold.method(action)
-        define_method action, meth
-      end
+    ((actions - exclude) & only).each do |action|
+      meth = mod.method(action)
+      define_method action, meth
     end
- 
   end
   
-  def index
-    # ...
+end
+
+
+module MyScaffold
+  extend Scaffold
+
+  mixed do |target, mixin_params|
+    actions(Actions, mixin_params)
   end
   
-  def show
-    # ...
+  
+  module Actions
+    def index
+      @collection = resource.all
+    end
+  
+    def show
+      @object = resource.find(params[:id])
+    end
   end
   
 end
