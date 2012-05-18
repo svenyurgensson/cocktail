@@ -45,6 +45,64 @@ Here is a Mojito for you
 => nil 
 ```
 
+###  Composing Mixins
+
+``` rb
+module Scaffold
+  extend Mixin
+  
+  mixed do |*_args|
+    base, mixin_params, actions_module = _args
+    
+    exclude  = mixin_params[:exclude] || []
+    only     = mixin_params[:only] || []     
+    resource = mixin_params[:resource]
+    
+    define_method :scaffolded_resource do
+      resource
+    end
+
+    actions = actions_module.instance_methods
+    actions = only.any? ? actions & only : actions
+    actions -= exclude
+    
+    actions.each do |method_name|
+      method_proc = actions_module.instance_method method_name
+      define_method method_name, method_proc  
+    end 
+    
+  end
+  
+end
+```
+
+
+``` rb
+module MyScaffold
+  extend Mixin
+  
+  mixed do |base, params|
+    Scaffold.mixto(base, params, Actions)
+  end
+  
+  module Actions
+    def index
+      @collection = scaffolded_resource.all
+    end
+    
+    def show
+      @object = scaffolded_resource.find(@id)
+    end
+  end
+end
+```
+
+``` rb
+class PostsController < ApplicationController
+  mixin(MyScaffold, :resource => Post)
+end
+```
+
 ## Contributing to `cocktail`
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.
