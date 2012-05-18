@@ -99,7 +99,7 @@ end
 
 ``` rb
 class PostsController < ApplicationController
-  mixin(MyScaffold, :resource => Post)
+  mixin(MyScaffold, :resource => Post, :only => :index)
 end
 ```
 
